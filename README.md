@@ -1,3 +1,2 @@
-# gs
-
-a [Sails](http://sailsjs.org) application
+# vistasoft-api-client
+Api Client for consume Vistasoft
