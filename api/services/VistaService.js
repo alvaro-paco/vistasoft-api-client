@@ -1,6 +1,8 @@
 "use strict";
 
 var axios = require('axios');
+var slugify = require('slugify');
+var propertyUri = `http://localhost/wordpress/index.php/properties/‎`;
 
 var api ={ 
     key: 'ee16bc608fe3615f542e32c65abe7813',
@@ -41,33 +43,38 @@ module.exports = {
         })
     },
     parseProperty: (data) => {
-        let property = {
-            author: 1,
-            title: item.Bairro,
-            content: item.Descricao,
-            status: getStatus(item.Status)
-        };
         try {
+            var slug = slugify(data.Bairro);
             let property = {
-                "Codigo": "2468",
-                "Categoria": "CHÁCARA",
-                "Bairro": "Agua Bonita",
-                "Cidade": "Piracicaba",
-                "ValorVenda": "480000"
-            }
+                author: 1,
+                title: data.Bairro,
+                content: data.Descricao,
+                status: getStatus(data.Status),
+                name: slug,
+                guid: `${propertyUri}${slug}/`
+            };
+
+            Post.create(property)
+            .then((record) => {
+                console.log(record);
+                return;
+            })
+            .catch ((err) => {
+                throw e;
+            })
             // Creating Term for a city
-            Terms.findOrCreate(
-            {name:data.cidade}, 
-            {
-                name: data.cidade,
-                slug: data.cidade.toLowerCase(),
-                group: 0
-            })
-            .then(function (createdOrFoundRecords){
+            // Terms.findOrCreate(
+            // {name:data.cidade}, 
+            // {
+            //     name: data.cidade,
+            //     slug: data.cidade.toLowerCase(),
+            //     group: 0
+            // })
+            // .then(function (createdOrFoundRecords){
                 
-            })
+            // })
         } catch (e) {
-            sails.log.error(e)
+            throw e;
         }
     }
 }

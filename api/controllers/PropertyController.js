@@ -32,9 +32,12 @@ module.exports = {
                     return page === success.data.paginas ? callback(null, success) : callback(++page, null);
                 })
             }, (err, success) => {
-                properties.forEach(function(property) {
-                    property = VistaService.parseProperty(property);
-                }, this);
+                // if (success) {
+                    properties.forEach(function(property) {
+                        VistaService.parseProperty(property);
+                    }, this);
+                    return res.json(200, null);
+                // }
             })]
         });
     }
